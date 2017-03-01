@@ -28,13 +28,13 @@ def load_data(folder):
                       );
     return user_events_df
 
-#GROUP by user_id and hour (by datetime index)
+#GROUP by user_id and hour
 def get_groups(df):
-    indexed = df.set_index(
-        pd.to_datetime(df['timestamp'], unit='s'))
-    groups = indexed.groupby(
-        by=['user_id', lambda x: x.replace(minute=0, second=0)])
-    return groups 
+    group_by = [
+        pd.to_datetime((df['timestamp']/3600).map(int), unit='h'),
+        df['user_id']
+    ]
+    return df.groupby(group_by)
 
 #map df to dict of modules metrics
 def process_metrics(df, modules):

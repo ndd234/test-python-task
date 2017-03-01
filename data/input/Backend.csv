@@ -3,3 +3,4 @@ timestamp|user_id|event_name|parameters_value
 1469627678|124|get_metadata|{“dashboard_id”:6}
 1469627680|123|get_metadata|{“dashboard_id”:7,“filter”:1}
 1469637680|123|get_metadata|{“dashboard_id”:7,“filter”:1}
+1469827675|125|get_metadata|{“dashboard_id”:7,“filter”:1}
