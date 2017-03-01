@@ -1,15 +1,14 @@
-﻿import os
+﻿from os import path, listdir, makedirs
 from importlib import import_module
 import pandas as pd
 
 #workaround for loading metrics modules 
 def load_modules(folder):
     modules = []
-    path = os.path.relpath(folder).replace('\\','.') + '.'
-	
-    for elem in os.listdir(folder):
+    parent = path.relpath(folder).replace('\\','.') + '.'
+    for elem in listdir(folder):
         if elem.endswith(".py") and elem != '__init__.py':
-            module_name = path + elem.rsplit('.', 1)[0]
+            module_name = parent + elem.rsplit('.', 1)[0]
             module_candidate = import_module(module_name)
             if(module_candidate.enable):
                 modules.append(module_candidate.module)
@@ -24,8 +23,8 @@ def load_data(folder):
     backend_df = pd.read_csv(folder + "Backend.csv", "|")
     user_events_df = (pages_df
                         .append(backend_df)
-                        .merge(users_df, on='user_id')
-                        .sort_values(by = ['timestamp'])
+                        .merge(users_df, how='left', on='user_id')
+                        .sort_values(by=['timestamp'])
                       );
     return user_events_df
 
@@ -65,8 +64,8 @@ def normalize_columns(df):
 
 #dump to csv
 def write_metrics(df, folder):
-    if not os.path.exists(folder):
-        os.makedirs(folder)
+    if not path.exists(folder):
+        makedirs(folder)
     df.to_csv(folder + 'Metrics.csv', sep='|', index = False)
     
 #some logic
