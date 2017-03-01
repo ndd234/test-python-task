@@ -4,6 +4,6 @@ def mapper(df):
     #magic
     return {'foo': 'bar'}
 
-enable = True
+enable = False
 	
 module = ModuleBuilder(mapper = mapper)
